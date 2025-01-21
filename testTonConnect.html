@@ -3,26 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TonConnect Button</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <title>TonConnect</title>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
         #ton-connect {
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <div id="ton-connect"></div>
+
     <script>
+        // Инициализация TonConnect
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://gist.githubusercontent.com/digital-farms/8d35f3000f9aee49b20647e1f68e6fd4/raw/00d6c25ce75e45e804447990b9849cdbd7a6d2e8/tonconnect-manifest.json',
             buttonRootId: 'ton-connect'
@@ -30,11 +26,12 @@
 
         tonConnectUI.onStatusChange((walletInfo) => {
             if (walletInfo?.account?.address) {
-                // Отправляем данные в Flutter через postMessage
-                const address = walletInfo.account.address;
-                const deviceInfo = navigator.userAgent;
-                const data = { address, deviceInfo };
-                window.parent.postMessage(JSON.stringify(data), "*");
+                const rawAddress = walletInfo.account.address;
+
+                // Отправляем данные в Flutter
+                Flutter.postMessage(JSON.stringify({ 
+                    address: rawAddress 
+                }));
             }
         });
     </script>
