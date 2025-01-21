@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TonConnect Button</title>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #ton-connect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="ton-connect"></div>
+    <script>
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://gist.githubusercontent.com/bezvozni/2174f95352798c1dd21502fbecb48d50/raw/a487503c18159026a560e4235ed638eb68e16b8e/tonconnect-manifest.json',
+            buttonRootId: 'ton-connect'
+        });
+
+        tonConnectUI.onStatusChange((walletInfo) => {
+            if (walletInfo?.account?.address) {
+                // Отправляем данные в Flutter через postMessage
+                const address = walletInfo.account.address;
+                const deviceInfo = navigator.userAgent;
+                const data = { address, deviceInfo };
+                window.parent.postMessage(JSON.stringify(data), "*");
+            }
+        });
+    </script>
+</body>
+</html>
