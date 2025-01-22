@@ -1,51 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-</head>
-<body>
-  <div id="ton-connect"></div>
+<script>
+  const connector = new TonConnectUI.TonConnect({
+    manifestUrl: 'https://gist.githubusercontent.com/digital-farms/8d35f3000f9aee49b20647e1f68e6fd4/raw/44e35a37804813e9f4b49f9b1cd51de9ff180075/tonconnect-manifest.json'
+  });
 
-  <script>
-    const connector = new TonConnectUI.TonConnect({
-      manifestUrl: 'https://gist.githubusercontent.com/digital-farms/8d35f3000f9aee49b20647e1f68e6fd4/raw/44e35a37804813e9f4b49f9b1cd51de9ff180075/tonconnect-manifest.json'
-    });
-
-    connector.onStatusChange(wallet => {
-      if (wallet) {
-        window.flutter_inappwebview.callHandler('tonEvent', {
-          type: 'walletConnected',
-          address: wallet.account.address
-        });
-      }
-    });
-
-    window.onload = () => connector.openModal();
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-</head>
-<body>
-  <div id="ton-connect"></div>
-
-  <script>
-    const connector = new TonConnectUI.TonConnect({
-      manifestUrl: 'https://gist.githubusercontent.com/digital-farms/8d35f3000f9aee49b20647e1f68e6fd4/raw/44e35a37804813e9f4b49f9b1cd51de9ff180075/tonconnect-manifest.json'
-    });
-
-    connector.onStatusChange(wallet => {
-      if (wallet) {
-        window.flutter_inappwebview.callHandler('tonEvent', {
-          type: 'walletConnected',
-          address: wallet.account.address
-        });
-      }
-    });
-
-    window.onload = () => connector.openModal();
-  </script>
-</body>
-</html>
+  connector.onStatusChange(wallet => {
+    if (wallet) {
+      window.TonWebViewInterface.postMessage({
+        type: 'walletConnected',
+        address: wallet.account.address
+      });
+    }
+  });
+</script>
