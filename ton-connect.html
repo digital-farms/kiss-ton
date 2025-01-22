@@ -29,14 +29,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const tonConnect = new TonConnectUI({
-                buttonStyle: 'primary', // Настройте стиль кнопки
-                walletSelector: {
-                    showQRCode: true, // Показать QR-код
-                    theme: 'light' // Тема "light" или "dark"
-                }
-            });
-            tonConnect.mount('#ton-connect');
+            console.log('DOM fully loaded and parsed');
+            if (!window.TonConnectUI) {
+                console.error('TonConnectUI is not loaded');
+                return;
+            }
+
+            try {
+                const tonConnect = new TonConnectUI({
+                    buttonStyle: 'primary', // Настройте стиль кнопки
+                    walletSelector: {
+                        showQRCode: true, // Показать QR-код
+                        theme: 'light' // Тема "light" или "dark"
+                    }
+                });
+                tonConnect.mount('#ton-connect');
+                console.log('TonConnectUI initialized and mounted');
+            } catch (error) {
+                console.error('Error initializing TonConnectUI:', error);
+            }
         });
     </script>
 </body>
